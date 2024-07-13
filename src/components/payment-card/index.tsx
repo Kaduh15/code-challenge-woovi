@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import { Box, Radio, Typography } from '@mui/material'
+import { Box, Radio, SxProps, Theme, Typography } from '@mui/material'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 
 type PaymentCardProps = {
@@ -11,6 +11,8 @@ type PaymentCardProps = {
   onClick?: () => void
   radioValue?: string
   title?: string
+  containerSx?: SxProps<Theme>
+  group?: 'start' | 'middle' | 'end'
 }
 
 export function PaymentCard({
@@ -20,23 +22,41 @@ export function PaymentCard({
   onClick,
   radioValue: value = '',
   title = '',
+  containerSx,
+  group,
 }: PaymentCardProps) {
   const borderChecked = checked ? '#03D69D' : '#E5E5E5'
   const bgChecked = checked ? '#F4FBF9' : 'Background'
+
+  const borderGroup = () => {
+    if (group === 'start') {
+      return '0.5rem 0.5rem 0 0'
+    }
+
+    if (group === 'middle') {
+      return '0'
+    }
+
+    if (group === 'end') {
+      return '0 0 0.5rem 0.5rem'
+    }
+
+    return '0.5rem'
+  }
 
   return (
     <Box
       sx={{
         border: `2px solid ${borderChecked}`,
         padding: '1.3rem',
-        borderRadius: '0.5rem',
+        borderRadius: borderGroup(),
         position: 'relative',
         width: '100%',
         marginTop: title ? '1rem' : '0',
         backgroundColor: bgChecked,
         display: 'flex',
         flexDirection: 'column',
-        gap: '0.5rem',
+        ...containerSx,
       }}
       onClick={onClick}
     >
